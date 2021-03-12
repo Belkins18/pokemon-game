@@ -6,11 +6,11 @@ const Layout = ({
     colorBg,
     urlBg
 }) => {
-
+  const style = {};
+  if (urlBg) {style.backgroundImage = `url(${urlBg})`};
+  if (colorBg) {style.backgroundColor = colorBg};
   return (
-    <section className={s.root} style={
-        urlBg ? {backgroundImage: `url(${urlBg})`} : colorBg ? {backgroundColor: colorBg} : {}
-    }>
+    <section className={s.root} style={style}>
       <div className={s.wrapper}>
         <article>
           <div className={s.title}>

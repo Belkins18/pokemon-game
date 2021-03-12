@@ -13,7 +13,7 @@ function App() {
     <React.Fragment>
       <Header/>
       <Layout urlBg={bg1}/>
-      <Layout colorBg={"transparent"}/>
+      <Layout colorBg="transparent"/>
       <Layout urlBg={bg3}/>
       <Footer />
     </React.Fragment>

@@ -1,8 +1,8 @@
 import s from "./style.module.css"
 
 const Header = ({
-    title="This is title", 
-    desk="This is Description!"
+    title="React Hacathon", 
+    desk="Pokemon game!"
 }) => {
   return (
     <header className={s.root}>

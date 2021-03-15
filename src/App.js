@@ -8,6 +8,7 @@ const App = () => {
   const handleChangePage = (pageName) => {
     console.log('££££: <App/>');
     setPage(pageName);
+    console.log('---------------------');
   }
 
   switch (page) {
@@ -15,7 +16,7 @@ const App = () => {
     default:
         return <HomePage onChangePage={handleChangePage}/>
     case "game":
-        return <GamePage/>
+        return <GamePage onChangePage={handleChangePage}/>
   }
 }
 

@@ -11,16 +11,18 @@ import bg3 from "../../assets/images/bg3.jpg";
 
 // Api
 import POKEMONS from "../../api/pokemon.json";
+import MenuHeader from "../../components/MenuHeader";
 
-function HomePage({onChangePage}) {
-   const handleClickButton = (pageName) => {
-       console.log('££££: <HomePage/>');
-       onChangePage && onChangePage(pageName);
-   }
+function HomePage({ onChangePage }) {
+  const handleClickButton = (pageName) => {
+    console.log("££££: <HomePage/>");
+    onChangePage && onChangePage(pageName);
+  };
 
   return (
     <React.Fragment>
-      <Header onClickButton={handleClickButton}/>
+      <MenuHeader></MenuHeader>
+      <Header onClickButton={handleClickButton} />
       <Layout title="Rules" urlBg={bg1}>
         <p>
           In the game two players face off against one another, one side playing

@@ -4,10 +4,10 @@
   right: 0;
   height: calc( 100vh - 120px );
   width: calc( 100vw - 120px );
-  background: #fafafa;
+  background: #fafafa2f;
 }
 
-.menuContainer.isActive > .overlay {
+.menuContainer.active > .overlay {
   animation: overlay-slide-in 300ms forwards 300ms;
 }
 

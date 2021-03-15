@@ -1,15 +1,19 @@
-import { useState } from "react";
-import cn from 'classnames';
+import cn from "classnames";
 import s from "./style.module.css";
 
-const NavBar = () => {
-    const [isActive, setActive] = useState(false);
+const NavBar = ({navState, onChangeMenuOpen }) => {
+  console.log('navState: ', navState);
 
   return (
     <nav className={s.root}>
       <div className={s.navWrapper}>
         <p className={s.brand}>LOGO</p>
-        <a className={cn(s.menuButton, {[isActive]: isActive})}>
+        <a
+          className={cn(s.menuButton, {
+            [s[`${navState.className}`]]: navState.status,
+          })}
+          onClick={onChangeMenuOpen}
+        >
           <span />
         </a>
       </div>

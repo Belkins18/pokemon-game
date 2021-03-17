@@ -33,9 +33,7 @@ const App = () => {
               <Route path="/game" component={GamePage} />
               <Route path="/about" component={AboutPage} />
               <Route path="/contact" component={ContactPage} />
-              <Route render={() => {
-                <Redirect to="/404"/>
-              }} />
+              <Route render={() => <Redirect to="/404"/>} />
             </Switch>
           </div>
           <Footer />

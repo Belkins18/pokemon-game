@@ -1,6 +1,5 @@
-const GamePage = ({onChangePage}) => {
+const GamePage = ({ onChangePage }) => {
   const handleBackToHomePage = (pageName = "app") => {
-    console.log("$$$$: <GamePage>");
     onChangePage && onChangePage(pageName);
   };
   return (

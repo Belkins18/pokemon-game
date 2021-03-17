@@ -1,10 +1,11 @@
-const GamePage = ({ onChangePage }) => {
-  const handleBackToHomePage = (pageName = "app") => {
-    onChangePage && onChangePage(pageName);
-  };
+import {useHistory} from "react-router-dom"
+
+const GamePage = () => {
+  const history = useHistory();
+
+  const handleBackToHomePage = () => history.push("/");
   return (
     <div>
-      This is Game Page!
       <button onClick={handleBackToHomePage}>Back to HomePage</button>
     </div>
   );

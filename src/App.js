@@ -1,4 +1,4 @@
-import { useRouteMatch, useLocation, Route, Switch } from "react-router-dom";
+import { useLocation, Route, Switch } from "react-router-dom";
 import cn from "classnames";
 // Components
 import AboutPage from "./routes/AboutPage";
@@ -37,7 +37,7 @@ const App = () => {
         </>
       </Route>
 
-      <Route path="/*" component={NotFound} />
+      <Route component={NotFound} />
     </Switch>
   );
 };

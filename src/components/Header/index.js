@@ -1,15 +1,12 @@
-import { Redirect } from "react-router";
+import { useHistory } from "react-router";
 import s from "./style.module.css"
 
 const Header = ({
     title="React Hacathon", 
     desk="Pokemon game!",
-    onClickButton
 }) => {
-
-  const handleClick = () => {
-    <Redirect to="/game" />
-  }
+  const history = useHistory();
+  const handleClick = () => history.push("/game")
 
   return (
     <header className={s.root}>

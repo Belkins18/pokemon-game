@@ -1,18 +1,18 @@
 [
     {
         "title": "HOME",
-        "href": "welcome"
+        "href": "/welcome"
     },
     {
         "title": "GAME",
-        "href": "game"
+        "href": "/game"
     },
     {
         "title": "ABOUT",
-        "href": "about"
+        "href": "/about"
     },
     {
         "title": "CONTACT",
-        "href": "contact"
+        "href": "/contact"
     }
 ]

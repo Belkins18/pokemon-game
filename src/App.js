@@ -1,4 +1,4 @@
-import { useLocation, Route, Switch } from "react-router-dom";
+import { useLocation, Route, Switch, Redirect } from "react-router-dom";
 import cn from "classnames";
 // Components
 import AboutPage from "./routes/AboutPage";
@@ -17,6 +17,8 @@ const App = () => {
 
   return (
     <Switch>
+      <Route path="/404" component={NotFound} />
+
       <Route>
         <>
           <MenuHeader bgActive={!noMatch()} />
@@ -27,17 +29,19 @@ const App = () => {
           >
             <Switch>
               <Route path="/" exact component={HomePage} />
+              <Route path="/welcome" component={HomePage} />
+              <Route path="/game" component={GamePage} />
               <Route path="/about" component={AboutPage} />
               <Route path="/contact" component={ContactPage} />
-              <Route path="/game" component={GamePage} />
-              <Route path="/welcome" component={HomePage} />
+              <Route render={() => {
+                <Redirect to="/404"/>
+              }} />
             </Switch>
           </div>
           <Footer />
         </>
       </Route>
 
-      <Route component={NotFound} />
     </Switch>
   );
 };

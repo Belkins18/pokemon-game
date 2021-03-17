@@ -2,7 +2,6 @@ import React from "react";
 // Components
 import Header from "../../components/Header";
 import Layout from "../../components/Layout";
-import Footer from "../../components/Footer";
 import PokemonCard from "../../components/PokemonCard";
 
 // Images
@@ -11,7 +10,6 @@ import bg3 from "../../assets/images/bg3.jpg";
 
 // Api
 import POKEMONS from "../../api/pokemon.json";
-import MenuHeader from "../../components/MenuHeader";
 
 function HomePage({ onChangePage }) {
   const handleClickButton = (pageName) => {
@@ -20,7 +18,6 @@ function HomePage({ onChangePage }) {
 
   return (
     <React.Fragment>
-      <MenuHeader/>
       <Header onClickButton={handleClickButton} />
       <Layout title="Rules" urlBg={bg1}>
         <p>
@@ -56,7 +53,6 @@ function HomePage({ onChangePage }) {
         </div>
       </Layout>
       <Layout title="Layout" desc="Description" urlBg={bg3} />
-      <Footer />
     </React.Fragment>
   );
 }

@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import Menu from "./Menu"
 import NavBar from "./NavBar"
 
-const MenuHeader = ({bgActive}) => {
+const MenuHeader = ({bgActive, onClickLink}) => {
     const [isOpen, setOpen] = useState(null);
-
+    console.log(onClickLink);
     const handleClickHumburger = () => {
         setOpen(prevState => !prevState);
     }

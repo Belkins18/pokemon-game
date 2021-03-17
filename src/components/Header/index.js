@@ -1,3 +1,4 @@
+import { Redirect } from "react-router";
 import s from "./style.module.css"
 
 const Header = ({
@@ -7,8 +8,7 @@ const Header = ({
 }) => {
 
   const handleClick = () => {
-    console.log('££££: <Header/>');
-    onClickButton && onClickButton('game');
+    <Redirect to="/game" />
   }
 
   return (

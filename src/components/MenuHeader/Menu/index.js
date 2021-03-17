@@ -1,7 +1,7 @@
 import cn from "classnames";
 import s from "./style.module.css";
-
 import menuList from "./menu.json";
+import { Link } from "react-router-dom";
 
 const Menu = ({ isOpen }) => {
   return (
@@ -18,7 +18,7 @@ const Menu = ({ isOpen }) => {
             menuList.map((item, index) => {
               return (
                 <li key={index}>
-                  <a href={item.href}>{item.title}</a>
+                  <Link to={item.href}>{item.title}</Link>
                 </li>
               )
             })

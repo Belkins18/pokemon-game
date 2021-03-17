@@ -1,5 +1,6 @@
-@import '_variables.css';
-@import '_fonts.css';
+@import './_variables.css';
+@import './_fonts.css';
+@import './button.css';
 
 *,
 *::before,
@@ -41,3 +42,4 @@ a:active {
     align-items: center;
     flex-wrap: wrap;
 }
+

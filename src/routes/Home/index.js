@@ -15,13 +15,12 @@ import MenuHeader from "../../components/MenuHeader";
 
 function HomePage({ onChangePage }) {
   const handleClickButton = (pageName) => {
-    console.log("££££: <HomePage/>");
     onChangePage && onChangePage(pageName);
   };
 
   return (
     <React.Fragment>
-      <MenuHeader></MenuHeader>
+      <MenuHeader/>
       <Header onClickButton={handleClickButton} />
       <Layout title="Rules" urlBg={bg1}>
         <p>

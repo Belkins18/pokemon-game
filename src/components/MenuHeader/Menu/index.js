@@ -1,30 +1,28 @@
 import cn from "classnames";
 import s from "./style.module.css";
 
-const Menu = ({ navState, onChangeMenuOpen }) => {
+import menuList from "./menu.json";
+
+const Menu = ({ isOpen }) => {
   return (
     <div
-      className={cn(
-        s.menuContainer,
-        `${navState.status ? `${s.active}` : `${s.deactive}`}`
-      )}
-      onClick={onChangeMenuOpen}
+      className={cn(s.menuContainer, {
+        [s.active]: isOpen === true,
+        [s.deactive]: isOpen === false,
+      })}
     >
       <div className={s.overlay} />
       <div className={s.menuItems}>
         <ul>
-          <li>
-            <a href="#welcome">HOME</a>
-          </li>
-          <li>
-            <a href="#game">GAME</a>
-          </li>
-          <li>
-            <a href="#about">ABOUT</a>
-          </li>
-          <li>
-            <a href="#contact">CONTACT</a>
-          </li>
+          {
+            menuList.map((item, index) => {
+              return (
+                <li key={index}>
+                  <a href={item.href}>{item.title}</a>
+                </li>
+              )
+            })
+          }
         </ul>
       </div>
     </div>

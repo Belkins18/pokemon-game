@@ -4,23 +4,17 @@ import React, { useState } from "react";
 import Menu from "./Menu"
 import NavBar from "./NavBar"
 
-const MenuHeader = () => {
-    const [isNavBarActive, setActive] = useState({
-        className: 'isActive',
-        status: false
-    });
+const MenuHeader = ({bgActive}) => {
+    const [isOpen, setOpen] = useState(null);
 
-    const handleMenuOpen = () => {
-        setActive({
-            ...isNavBarActive,
-            status: !isNavBarActive.status
-        });
+    const handleClickHumburger = () => {
+        setOpen(prevState => !prevState);
     }
 
     return (
         <React.Fragment>
-            <Menu navState={isNavBarActive} onChangeMenuOpen={handleMenuOpen}/>
-            <NavBar navState={isNavBarActive} onChangeMenuOpen={handleMenuOpen}/>
+            <Menu isOpen={isOpen}/>
+            <NavBar isOpen={isOpen} bgActive={bgActive} onClickHumburger={handleClickHumburger}/>
         </React.Fragment>
     )
 }

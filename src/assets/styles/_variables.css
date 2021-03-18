@@ -1,0 +1,12 @@
+:root {
+    /* Primary */
+    --primary: #252934;
+    --primary-bg:#fafafa;
+  
+    /* Secondary */
+    --secondary-hover: #f300b4;
+    
+    /* Other */
+    --white: #fff;
+    --black: #000;
+  }

@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import { useLocation, Route, Switch, Redirect } from "react-router-dom";
+import cn from "classnames";
+// Components
+import AboutPage from "./routes/AboutPage";
+import ContactPage from "./routes/ContactPage";
+import HomePage from "./routes/HomePage";
+import GamePage from "./routes/GamePage";
+import NotFound from "./routes/NotFound";
+import MenuHeader from "./components/MenuHeader";
+import Footer from "./components/Footer";
+//Styles
+import s from "./app.module.css";
 
-function App() {
+const App = () => {
+  const location = useLocation();
+  const noMatch = () => (location.pathname === "/" || location.pathname === "/welcome")
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Switch>
+      <Route path="/404" component={NotFound} />
+
+      <Route>
+        <>
+          <MenuHeader bgActive={!noMatch()} />
+          <div
+            className={cn(s.wrap, {
+              [s.isHomePage]: noMatch(),
+            })}
+          >
+            <Switch>
+              <Route path="/" exact component={HomePage} />
+              <Route path="/welcome" component={HomePage} />
+              <Route path="/game" component={GamePage} />
+              <Route path="/about" component={AboutPage} />
+              <Route path="/contact" component={ContactPage} />
+              <Route render={() => <Redirect to="/404"/>} />
+            </Switch>
+          </div>
+          <Footer />
+        </>
+      </Route>
+
+    </Switch>
   );
-}
+};
 
 export default App;

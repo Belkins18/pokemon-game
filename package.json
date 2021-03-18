@@ -15,7 +15,7 @@
   "scripts": {
     "json-server": "json-server --watch -p 2222 src/api/pokemon.json",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "sh -ac '. ./.env; react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

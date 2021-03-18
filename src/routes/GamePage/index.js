@@ -3,7 +3,7 @@ import PokemonCard from "../../components/PokemonCard";
 import { useState, useEffect } from "react";
 
 // Api
-import url from "../../api";
+import { url } from "../../api";
 
 const GamePage = () => {
   const history = useHistory();

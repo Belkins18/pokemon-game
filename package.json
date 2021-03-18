@@ -13,7 +13,8 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "json-server --watch src/api/pokemon.json && react-scripts start",
+    "json-server": "json-server --watch src/api/pokemon.json",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

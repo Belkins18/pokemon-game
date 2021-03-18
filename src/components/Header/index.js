@@ -2,7 +2,7 @@ import { useHistory } from "react-router";
 import s from "./style.module.css"
 
 const Header = ({
-    title="React Hacathon", 
+    title=`React Hacathon: ${process.env.NODE_ENV}`, 
     desk="Pokemon game!",
 }) => {
   const history = useHistory();

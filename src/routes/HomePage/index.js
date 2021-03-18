@@ -2,23 +2,14 @@ import React from "react";
 // Components
 import Header from "../../components/Header";
 import Layout from "../../components/Layout";
-import PokemonCard from "../../components/PokemonCard";
-
 // Images
 import bg1 from "../../assets/images/bg1.jpg";
 import bg3 from "../../assets/images/bg3.jpg";
 
-// Api
-import POKEMONS from "../../api/pokemon.json";
-
-function HomePage({ onChangePage }) {
-  const handleClickButton = (pageName) => {
-    onChangePage && onChangePage(pageName);
-  };
-
+function HomePage() {
   return (
     <React.Fragment>
-      <Header onClickButton={handleClickButton} />
+      <Header />
       <Layout title="Rules" urlBg={bg1}>
         <p>
           In the game two players face off against one another, one side playing
@@ -37,20 +28,6 @@ function HomePage({ onChangePage }) {
           rank is higher, the opponent's card will be captured and changed into
           the player's color instead.
         </p>
-      </Layout>
-      <Layout title="Pokemon Cards" colorBg="transparent">
-        <div className="flex">
-          {POKEMONS.map((item) => (
-            <PokemonCard
-              key={item.id}
-              id={item.id}
-              name={item.name}
-              img={item.img}
-              type={item.type}
-              values={item.values}
-            />
-          ))}
-        </div>
       </Layout>
       <Layout title="Layout" desc="Description" urlBg={bg3} />
     </React.Fragment>

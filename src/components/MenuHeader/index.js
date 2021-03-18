@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router";
 
 // Components
 import Menu from "./Menu";

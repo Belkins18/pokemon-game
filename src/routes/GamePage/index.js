@@ -12,7 +12,7 @@ const GamePage = () => {
   const [pokemons, setPokemons] = useState([]);
 
   const getPokemons = () => {
-    fetch(url + "/pokemons", {
+    fetch("https://api.jsonbin.io/b/6052bfc17ffeba41c07cd14b", {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",

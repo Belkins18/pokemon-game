@@ -1,87 +1,69 @@
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
+import {useState, useEffect} from "react";
+// Database
+import database from "../../service/firebase";
+// Components
 import PokemonCard from "../../components/PokemonCard";
-import { useState, useEffect } from "react";
-import { url } from "../../api";
+
 
 const GamePage = () => {
-  const history = useHistory();
-  const handleBackToHomePage = () => history.push("/");
-  const isDev = `${process.env.NODE_ENV}` === "development";
-  const [pokemons, setPokemons] = useState([]);
+    const history = useHistory();
+    const handleBackToHomePage = () => history.push("/");
 
-  const getPokemons = () => {
-    if (isDev) {
-      fetch(url + "/pokemons", {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      })
-        .then((response) =>  {
-          return response.json();
+    const [pokemons, setPokemons] = useState({});
+
+    useEffect(() => {
+        database.ref('pokemons').once('value', (snapshot) => {
+            setPokemons(snapshot.val());
         })
-        .then((myJson) => {
-          console.log(myJson);
-          setPokemons(myJson);
-        })
-        .catch((error) => {
-          console.error("ERROR:", error.message)
+    }, []);
+
+    // const handleChangeActive = ({uuid, isActive}) => {
+    //     let _pokemons = {...pokemons};
+    //
+    //     for (const key in _pokemons) {
+    //         if (key === uuid) {
+    //             _pokemons[key] = {
+    //                 ..._pokemons[key],
+    //                 isActive: !isActive
+    //             };
+    //         }
+    //     }
+    //     setPokemons(_pokemons);
+    // };
+
+    const handleChangeActive = ({uuid, isActive}) => {
+        setPokemons(prevState => {
+            if (prevState[uuid]) {
+                const copyState = {...prevState};
+                copyState[uuid]["isActive"] = !isActive
+                return copyState;
+            }
         });
-    } else {
-      fetch(`https://api.jsonbin.io/b/6052bfc17ffeba41c07cd14b`, {
-        headers: {
-          "content-type": "application/json",
-          "secret-key": `$2b$10$uYn8sNZhJJ0i0S${process.env.REACT_APP_JSONBIN_API_KEY}`,
-        },
-        method: "GET",
-        mode: "cors",
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((myJson) => {
-          console.log(myJson.pokemons);
-          setPokemons(myJson.pokemons);
-        })
-        .catch((error) => {
-          console.error("ERROR:", error.message);
-        });
-    }
-  };
-  useEffect(() => {
-    getPokemons();
-  }, []);
+    };
 
-  const handleChangeParentState = ({ id, isActive }) => {
-    const newCards = pokemons.map((card) => {
-      if (card.id === id) {
-        card.isActive = !isActive;
-      }
-      return card;
-    });
-
-    setPokemons(newCards);
-  };
-
-  return (
-    <div>
-      <button onClick={handleBackToHomePage}>Back to HomePage</button>
-      <div className="flex">
-        {pokemons.map((item) => (
-          <PokemonCard
-            key={item.id}
-            id={item.id}
-            name={item.name}
-            img={item.img}
-            type={item.type}
-            values={item.values}
-            isActive={item.isActive}
-            onChangeParentState={handleChangeParentState}
-          />
-        ))}
-      </div>
-    </div>
-  );
+    return (
+        <div>
+            <button onClick={handleBackToHomePage}>Back to HomePage</button>
+            <div className="flex">
+                {
+                    Object.entries(pokemons).map(([key, {id, name, img, type, values, isActive}]) => (
+                        <PokemonCard
+                            key={key}
+                            uuid={key}
+                            id={id}
+                            name={name}
+                            img={img}
+                            type={type}
+                            values={values}
+                            isActive={isActive}
+                            onChangeParentState={handleChangeActive}
+                        />
+                    ))
+                }
+            </div>
+        </div>
+    );
 };
 
 export default GamePage;

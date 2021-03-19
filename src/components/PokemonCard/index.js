@@ -2,15 +2,14 @@ import cn from 'classnames';
 import s from "./style.module.css";
 import backSideCardImage from "./assets/card-back-side.jpg";
 
-const PokemonCard = ({ id, name, img, type, values, isActive = false, onChangeParentState }) => {
+const PokemonCard = ({uuid, id, name, img, type, values, isActive = false, onChangeParentState }) => {
   
   const handleClickToPokemonCard = () => {
-    console.log(id)
-    onChangeParentState && onChangeParentState({id, isActive});
+    onChangeParentState && onChangeParentState({uuid, isActive});
   };
 
   return (
-    <div className={s.root} onClick={handleClickToPokemonCard}>
+    <div className={s.root} data-key={uuid} onClick={handleClickToPokemonCard}>
       <div className={cn(s.pokemonCard, {[s.isActive]: isActive})}>
         <div className={s.cardFront}>
           <div className={cn(s.wrap, s.front)}>

@@ -10,11 +10,6 @@ import MenuHeader from "./components/MenuHeader";
 import Footer from "./components/Footer";
 //Styles
 import s from "./app.module.css";
-import database from "./service/firebase";
-
-database.ref('pokemons').once('value', (snapshot) => {
-    console.log(snapshot.val());
-})
 
 const App = () => {
     const location = useLocation();

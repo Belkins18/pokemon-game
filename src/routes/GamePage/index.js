@@ -37,10 +37,17 @@ const GamePage = () => {
             if (prevState[uuid]) {
                 const copyState = {...prevState};
                 copyState[uuid]["isActive"] = !isActive
+                database.ref('pokemons/' + uuid).set({
+                    ...pokemons[uuid]
+                });
                 return copyState;
             }
         });
+
+
     };
+
+
 
     return (
         <div>

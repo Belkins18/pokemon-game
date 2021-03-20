@@ -1,9 +1,14 @@
 import cn from "classnames";
 import s from "./style.module.css";
-
 import menuList from "./menu.json";
+import { Link } from "react-router-dom";
 
-const Menu = ({ isOpen }) => {
+const Menu = ({ isOpen, onChangeParentState}) => {
+
+  const handleClikToLink = () => {
+    onChangeParentState && onChangeParentState(!isOpen);
+  }
+
   return (
     <div
       className={cn(s.menuContainer, {
@@ -15,10 +20,10 @@ const Menu = ({ isOpen }) => {
       <div className={s.menuItems}>
         <ul>
           {
-            menuList.map((item, index) => {
+            menuList.map(({href, title}, index) => {
               return (
                 <li key={index}>
-                  <a href={item.href}>{item.title}</a>
+                  <Link to={href} onClick={handleClikToLink}>{title}</Link>
                 </li>
               )
             })

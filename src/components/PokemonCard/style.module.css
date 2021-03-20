@@ -27,6 +27,7 @@
     transform-style: preserve-3d;
     transition: .6s .1s;
     transform: rotateY(180deg);
+    cursor: pointer;
 }
 
 /* TODO: This place where we should change :hover on .active */

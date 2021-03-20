@@ -16,7 +16,7 @@ const GamePage = () => {
         database.ref('pokemons').once('value', (snapshot) => {
             setPokemons(snapshot.val());
         })
-    }, []);
+    }, [pokemons]);
 
     // const handleChangeActive = ({uuid, isActive}) => {
     //     let _pokemons = {...pokemons};
@@ -40,18 +40,52 @@ const GamePage = () => {
                 database.ref('pokemons/' + uuid).set({
                     ...copyState[uuid]
                 });
+                console.log(JSON.stringify(copyState[uuid], null, 2));
                 return copyState;
             }
         });
-
-
     };
 
+    const handleAddNewPokemons = () => {
+        const newPokemon = {
+            "abilities": [
+                "intimidate",
+                "shed-skin",
+                "unnerve"
+            ],
+            "base_experience": 157,
+            "height": 35,
+            "id": 24,
+            "img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/24.png",
+            "name": "arbok",
+            "stats": {
+                "attack": 95,
+                "defense": 69,
+                "hp": 60,
+                "special-attack": 65,
+                "special-defense": 79,
+                "speed": 80
+            },
+            "type": "poison",
+            "values": {
+                "bottom": 2,
+                "left": 8,
+                "right": "A",
+                "top": 6
+            },
+            "weight": 650
+        }
 
+        const newKey = database.ref().child('pokemons').push().key;
+        database.ref('pokemons/' + newKey).set({...newPokemon});
+    }
 
     return (
         <div>
-            <button onClick={handleBackToHomePage}>Back to HomePage</button>
+            <div className="flex">
+                <button onClick={handleBackToHomePage}>Back to HomePage</button>
+                <button onClick={handleAddNewPokemons}>Add new pokemons</button>
+            </div>
             <div className="flex">
                 {
                     Object.entries(pokemons).map(([key, {id, name, img, type, values, isActive}]) => (

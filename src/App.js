@@ -1,3 +1,4 @@
+import {useState} from "react";
 import {useLocation, Route, Switch, Redirect} from "react-router-dom";
 import cn from "classnames";
 // Components
@@ -10,13 +11,25 @@ import MenuHeader from "./components/MenuHeader";
 import Footer from "./components/Footer";
 //Styles
 import s from "./app.module.css";
+import {TestContext} from "./context/testContext";
 
 const App = () => {
+    const [theme, setTheme] = useState("light")
     const location = useLocation();
     const noMatch = () => (location.pathname === "/" || location.pathname === "/welcome")
 
+    const handleChangeTheme = (val) => {
+        setTheme(val);
+    }
+
+
     return (
-        <Switch>
+        <TestContext.Provider value={{
+            theme,
+            onChangeTheme: handleChangeTheme
+        }}>
+
+            <Switch>
             <Route path="/404" component={NotFound}/>
 
             <Route>
@@ -41,6 +54,8 @@ const App = () => {
             </Route>
 
         </Switch>
+        </TestContext.Provider>
+
     );
 };
 

@@ -1,10 +1,11 @@
 import {useHistory} from "react-router-dom";
 import {useState, useEffect} from "react";
 // Database
-import database from "../../service/firebase";
+import {database, DT_POKEMONS} from "../../service/firebase";
 // Components
 import PokemonCard from "../../components/PokemonCard";
 
+console.log(DT_POKEMONS);
 
 const GamePage = () => {
     const history = useHistory();
@@ -12,38 +13,29 @@ const GamePage = () => {
 
     const [pokemons, setPokemons] = useState({});
 
-    useEffect(() => {
-        database.ref('pokemons').once('value', (snapshot) => {
+    const getPokemons = () => {
+        database.ref(DT_POKEMONS).once('value', (snapshot) => {
             setPokemons(snapshot.val());
         })
-    }, [pokemons]);
+    }
 
-    // const handleChangeActive = ({uuid, isActive}) => {
-    //     let _pokemons = {...pokemons};
-    //
-    //     for (const key in _pokemons) {
-    //         if (key === uuid) {
-    //             _pokemons[key] = {
-    //                 ..._pokemons[key],
-    //                 isActive: !isActive
-    //             };
-    //         }
-    //     }
-    //     setPokemons(_pokemons);
-    // };
+    useEffect(() => {
+        getPokemons();
+    },[]);
 
     const handleChangeActive = ({uuid, isActive}) => {
-        setPokemons(prevState => {
-            if (prevState[uuid]) {
-                const copyState = {...prevState};
-                copyState[uuid]["isActive"] = !isActive
-                database.ref('pokemons/' + uuid).set({
-                    ...copyState[uuid]
-                });
-                console.log(JSON.stringify(copyState[uuid], null, 2));
-                return copyState;
-            }
-        });
+        if (pokemons[uuid]) {
+            const copyState = {...pokemons};
+            copyState[uuid]["isActive"] = !isActive
+
+            database.ref(`${DT_POKEMONS}/${uuid}`).set({
+                ...copyState[uuid]
+            })
+                .then(() => {
+                    setPokemons(copyState);
+                })
+                .catch(e => {console.error(e.message())})
+        }
     };
 
     const handleAddNewPokemons = () => {
@@ -77,7 +69,9 @@ const GamePage = () => {
         }
 
         const newKey = database.ref().child('pokemons').push().key;
-        database.ref('pokemons/' + newKey).set({...newPokemon});
+        database.ref('pokemons/' + newKey).set({...newPokemon})
+            .then(() => getPokemons())
+            .catch((error) => {console.error(error.message())})
     }
 
     return (

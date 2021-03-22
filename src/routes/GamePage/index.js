@@ -1,22 +1,22 @@
 import {useHistory} from "react-router-dom";
-import {useState, useEffect} from "react";
-// Database
-import {database, DT_POKEMONS} from "../../service/firebase";
+import {useState, useEffect, useContext} from "react";
 // Components
 import PokemonCard from "../../components/PokemonCard";
-
-console.log(DT_POKEMONS);
+// Context
+import {FirebaseContext} from "../../context/firebaseContext";
 
 const GamePage = () => {
+    const firebase = useContext(FirebaseContext);
+    console.log(firebase);
+
     const history = useHistory();
     const handleBackToHomePage = () => history.push("/");
 
     const [pokemons, setPokemons] = useState({});
 
-    const getPokemons = () => {
-        database.ref(DT_POKEMONS).once('value', (snapshot) => {
-            setPokemons(snapshot.val());
-        })
+    const getPokemons = async () => {
+        const response = await firebase.getPokemonsOnce();
+        if (response) setPokemons(response);
     }
 
     useEffect(() => {
@@ -28,13 +28,9 @@ const GamePage = () => {
             const copyState = {...pokemons};
             copyState[uuid]["isActive"] = !isActive
 
-            database.ref(`${DT_POKEMONS}/${uuid}`).set({
-                ...copyState[uuid]
+            firebase.postPokemon(uuid, {...copyState[uuid]}, () => {
+                setPokemons(copyState);
             })
-                .then(() => {
-                    setPokemons(copyState);
-                })
-                .catch(e => {console.error(e.message())})
         }
     };
 
@@ -67,11 +63,9 @@ const GamePage = () => {
             },
             "weight": 650
         }
-
-        const newKey = database.ref().child('pokemons').push().key;
-        database.ref('pokemons/' + newKey).set({...newPokemon})
-            .then(() => getPokemons())
-            .catch((error) => {console.error(error.message())})
+        firebase.addPokenon({...newPokemon}, () => {
+            getPokemons();
+        })
     }
 
     return (

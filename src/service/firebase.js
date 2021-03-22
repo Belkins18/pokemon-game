@@ -12,16 +12,40 @@ const firebaseConfig = {
 }
 
 firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
 
-const DT_POKEMONS = "pokemons"
+export default class Firebase {
+    constructor() {
+        this.firebase = firebase;
+        this.database = this.firebase.database();
+        this.dbPokemonsName = "pokemons";
+    }
 
-export {
-    firebase,
-    database,
-    DT_POKEMONS
+    getPokemonsSocket(cb) {
+        this.database.ref(this.dbPokemonsName).on("value", (snapshot) => {
+            cb(snapshot.val());
+        })
+    }
+
+    async getPokemonsOnce() {
+        return await this.database.ref(this.dbPokemonsName).once('value')
+            .then(snapshot => snapshot.val());
+    }
+
+    postPokemon(uuid, pokemon, cb = null) {
+        this.database.ref(`${this.dbPokemonsName}/${uuid}`).set(pokemon)
+            .then(() => cb())
+            .catch((error) => {console.error(error.message())});
+    }
+
+    addPokenon(data, cb) {
+        const key = this.database.ref().child('pokemons').push().key;
+        this.database.ref(`${this.dbPokemonsName}/${key}`).set(data)
+            .then(() => cb())
+            .catch((error) => {
+                console.error(error.message())
+            })
+    }
 }
 
-export default database;
 
 

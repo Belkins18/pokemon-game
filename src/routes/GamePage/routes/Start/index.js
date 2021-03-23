@@ -1,16 +1,13 @@
-import {useHistory} from "react-router-dom";
 import {useState, useEffect, useContext} from "react";
 // Components
 import PokemonCard from "../../../../components/PokemonCard";
 // Context
 import {FirebaseContext} from "../../../../context/firebaseContext";
+// Styles
+import s from "./style.module.css";
 
 const StartPage = () => {
     const firebase = useContext(FirebaseContext);
-
-    const history = useHistory();
-    const handleBackToHomePage = () => history.push("/");
-
     const [pokemons, setPokemons] = useState({});
 
     useEffect(() => {
@@ -20,59 +17,26 @@ const StartPage = () => {
         return () => firebase.offPokemonsSocket()
     },[]);
 
-    const handleChangeActive = ({uuid, isActive}) => {
+    const handleChangeActiveSelected = (uuid, isSelected) => {
+        console.log(uuid);
         if (pokemons[uuid]) {
             const copyState = {...pokemons};
-            copyState[uuid]["isActive"] = !isActive
+            copyState[uuid]["isSelected"] = !isSelected
 
-            firebase.postPokemon(uuid, {...copyState[uuid]}, () => {
-                setPokemons(copyState);
-            })
+            setPokemons(copyState);
         }
     };
 
-    const handleAddNewPokemons = () => {
-        const newPokemon = {
-            "abilities": [
-                "intimidate",
-                "shed-skin",
-                "unnerve"
-            ],
-            "base_experience": 157,
-            "height": 35,
-            "id": 24,
-            "img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/24.png",
-            "name": "arbok",
-            "stats": {
-                "attack": 95,
-                "defense": 69,
-                "hp": 60,
-                "special-attack": 65,
-                "special-defense": 79,
-                "speed": 80
-            },
-            "type": "poison",
-            "values": {
-                "bottom": 2,
-                "left": 8,
-                "right": "A",
-                "top": 6
-            },
-            "weight": 650
-        }
-        firebase.addPokenon({...newPokemon})
-    }
-
     return (
         <div>
-            <div className="flex">
-                <button onClick={handleBackToHomePage}>Back to HomePage</button>
-                <button onClick={handleAddNewPokemons}>Add new pokemons</button>
+            <div className={s.buttonWrap}>
+                <button>Start Game</button>
             </div>
             <div className="flex">
                 {
-                    Object.entries(pokemons).map(([key, {id, name, img, type, values, isActive}]) => (
+                    Object.entries(pokemons).map(([key, {id, name, img, type, values, isSelected}]) => (
                         <PokemonCard
+                            className={s.card}
                             key={key}
                             uuid={key}
                             id={id}
@@ -80,8 +44,9 @@ const StartPage = () => {
                             img={img}
                             type={type}
                             values={values}
-                            isActive={isActive}
-                            onChangeParentState={handleChangeActive}
+                            isActive={true}
+                            isSelected={isSelected}
+                            onChangeParentState={handleChangeActiveSelected}
                         />
                     ))
                 }

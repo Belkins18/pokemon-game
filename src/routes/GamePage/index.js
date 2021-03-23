@@ -7,20 +7,21 @@ import {FirebaseContext} from "../../context/firebaseContext";
 
 const GamePage = () => {
     const firebase = useContext(FirebaseContext);
-    console.log(firebase);
 
     const history = useHistory();
     const handleBackToHomePage = () => history.push("/");
 
     const [pokemons, setPokemons] = useState({});
 
-    const getPokemons = async () => {
-        const response = await firebase.getPokemonsOnce();
-        if (response) setPokemons(response);
-    }
+    // const getPokemons = async () => {
+    //     const response = await firebase.getPokemonsOnce();
+    //     if (response) setPokemons(response);
+    // }
 
     useEffect(() => {
-        getPokemons();
+        firebase.getPokemonsSocket((pokemons) => {
+            setPokemons(pokemons);
+        })
     },[]);
 
     const handleChangeActive = ({uuid, isActive}) => {
@@ -63,9 +64,7 @@ const GamePage = () => {
             },
             "weight": 650
         }
-        firebase.addPokenon({...newPokemon}, () => {
-            getPokemons();
-        })
+        firebase.addPokenon({...newPokemon})
     }
 
     return (

@@ -26,6 +26,10 @@ export default class Firebase {
         })
     }
 
+    offPokemonsSocket() {
+        this.database.ref(this.dbPokemonsName).off();
+    }
+
     async getPokemonsOnce() {
         return await this.database.ref(this.dbPokemonsName).once('value')
             .then(snapshot => snapshot.val());
@@ -37,7 +41,7 @@ export default class Firebase {
             .catch((error) => {console.error(error.message())});
     }
 
-    addPokenon(data, cb) {
+    addPokenon(data, cb = null) {
         const key = this.database.ref().child('pokemons').push().key;
         this.database.ref(`${this.dbPokemonsName}/${key}`).set(data)
             .then(() => cb())

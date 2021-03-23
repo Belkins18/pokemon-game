@@ -1,10 +1,10 @@
 import cn from 'classnames';
 import s from "./style.module.css";
 
-const PokemonCard = ({uuid, className, id, name, img, type, values, isActive, isSelected, minimize, onChangeParentState }) => {
-  
+const PokemonCard = ({className, id, name, img, type, values, isActive, isSelected, minimize, onChangeParentState }) => {
+
   const handleClickToPokemonCard = () => {
-    onChangeParentState && onChangeParentState(uuid, isSelected);
+    onChangeParentState && onChangeParentState();
   };
 
   return (

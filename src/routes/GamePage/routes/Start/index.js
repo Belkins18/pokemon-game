@@ -52,7 +52,11 @@ const StartPage = () => {
                             values={values}
                             isActive={true}
                             isSelected={isSelected}
-                            onChangeParentState={handleChangeActiveSelected}
+                            onChangeParentState={ () => {
+                                if (Object.keys(pokemonsContext.pokemons).length < 5 || isSelected) {
+                                    handleChangeActiveSelected(key, isSelected)
+                                }
+                            }}
                         />
                     ))
                 }

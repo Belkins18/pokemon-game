@@ -1,4 +1,5 @@
 import {useState, useEffect, useContext} from "react";
+import { useHistory } from "react-router-dom";
 // Components
 import PokemonCard from "../../../../components/PokemonCard";
 // Context
@@ -10,6 +11,8 @@ import s from "./style.module.css";
 const StartPage = () => {
     const firebaseContext = useContext(FirebaseContext);
     const pokemonsContext = useContext(PokemonContext);
+
+    const history = useHistory()
 
     const [pokemons, setPokemons] = useState({});
 
@@ -33,10 +36,18 @@ const StartPage = () => {
         }
     };
 
+    const getMinConf = () => {
+        return Object.keys(pokemonsContext.pokemons).length < 5
+    }
+
+    const handleStartGameClick = () => {
+        history.push("/game/board");
+    }
+
     return (
         <div>
             <div className={s.buttonWrap}>
-                <button>Start Game</button>
+                <button onClick={handleStartGameClick} disabled={getMinConf()}>Start Game</button>
             </div>
             <div className="flex">
                 {
@@ -53,7 +64,7 @@ const StartPage = () => {
                             isActive={true}
                             isSelected={isSelected}
                             onChangeParentState={ () => {
-                                if (Object.keys(pokemonsContext.pokemons).length < 5 || isSelected) {
+                                if (getMinConf() || isSelected) {
                                     handleChangeActiveSelected(key, isSelected)
                                 }
                             }}

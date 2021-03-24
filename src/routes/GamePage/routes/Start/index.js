@@ -20,8 +20,9 @@ const StartPage = () => {
         firebaseContext.getPokemonsSocket((pokemons) => {
             setPokemons(pokemons);
         });
+        console.log("useEffect")
         return () => firebaseContext.offPokemonsSocket()
-    },[]);
+    },[firebaseContext]);
 
     const handleChangeActiveSelected = (uuid, isSelected) => {
         const pokemon = {...pokemons[uuid]}

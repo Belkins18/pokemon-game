@@ -8,7 +8,6 @@ import s from './style.module.css';
 // Api
 import API_RESPONSE from "../../../../api";
 
-
 const BoardPage = () => {
     const [board, setBoard] = useState([]);
 
@@ -16,12 +15,12 @@ const BoardPage = () => {
     // const history = useHistory();
 
     useEffect( () => {
-        async function fetchData() {
-            const boardResponse = await fetch(API_RESPONSE.board.url, API_RESPONSE.board.headers);
+        async function fetchBoardData() {
+            const boardResponse = await fetch(API_RESPONSE.board.url, API_RESPONSE.board.options);
             const boardRequest = await boardResponse.json();
             return boardRequest;
         }
-        fetchData().then(({data}) => {
+        fetchBoardData().then(({data}) => {
             setBoard(data);
         });
     }, [])

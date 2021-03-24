@@ -16,24 +16,34 @@ class API_RESPONSE{
     }
 }
 
-const api = new API_RESPONSE();
-
-const API = {
+const API_STRUCT = {
     board: {
         method: "GET",
         url: `${_url}/board`,
-        options: api.options
     },
     createPlayer: {
         method: "GET",
         url: `${_url}/create-player`,
-        options: api.options
     },
     playersTurn: {
         method: "GET",
         url: `${_url}/players-turn`,
-        options: api.options
     }
 }
 
-export default API;
+const api = Object.entries(API_STRUCT).reduce((prev, curr) => {
+    console.log(prev)
+    console.log(curr)
+    const key = curr[0];
+    let values = curr[1];
+
+    return prev[key] = {
+        ...prev,
+        [key]: {
+            ...values,
+            options: new API_RESPONSE(values.method, values.url).options
+        }
+    };
+}, {});
+
+export default api;

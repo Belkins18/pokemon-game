@@ -5,6 +5,10 @@
     min-width: 200px;
 }
 
+.card.noSelected {
+    cursor: initial;
+}
+
 .buttonWrap {
     text-align: center;
     padding: 2rem;

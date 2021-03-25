@@ -10,6 +10,7 @@ import {PokemonContext} from "../../context/pokemonContext";
 const GamePage = () => {
     const [selectedPokemons, setSelectedPokemons] = useState({});
     const [enemyPopemons, setEnemyPopemons] = useState([]);
+    const [statusGame, setStatusGame] = useState("");
     console.log("£££: selectedPokemons: ", selectedPokemons);
     console.log("£££: aiPopemons: ", enemyPopemons);
 
@@ -40,13 +41,20 @@ const GamePage = () => {
         setEnemyPopemons([]);
     };
 
+    const handleStatusGame = (statusGame) => {
+        debugger;
+        setStatusGame(statusGame);
+    }
+
     return (
         <PokemonContext.Provider value={{
             pokemons: selectedPokemons,
             enemyPopemons: enemyPopemons,
+            statusGame: statusGame,
             onSelectedPokemons: handleSelectedPokemons,
             onEnemyPokemons: handleEnemyPokemons,
             onClearContext: handleClearContext,
+            onSetStatusGame: handleStatusGame,
 
         }}>
             <Switch>

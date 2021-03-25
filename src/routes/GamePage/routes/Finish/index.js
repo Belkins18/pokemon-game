@@ -6,6 +6,7 @@ import PokemonCard from "../../../../components/PokemonCard";
 import {PokemonContext} from "../../../../context/pokemonContext";
 // Styles
 import s from "./style.module.css";
+import cn from "classnames";
 
 const FinishPage = () => {
     const pokemonsContext = useContext(PokemonContext);
@@ -14,7 +15,8 @@ const FinishPage = () => {
     const myCards =  Object.values(pokemonsContext.pokemons);
     const enemyCards = pokemonsContext.enemyPopemons;
 
-    const handleEndtGameClick = () => {
+    const handleEndGameClick = (e) => {
+        e.preventDefault();
         console.log(pokemonsContext);
         pokemonsContext.onClearContext();
         history.push({pathname: "/game/"});
@@ -33,7 +35,7 @@ const FinishPage = () => {
                         <div
                             key={id}>
                             <PokemonCard
-                                className={s.card}
+                                className={cn(s.card, s.noSelected)}
                                 key={id}
                                 id={id}
                                 name={name}
@@ -47,7 +49,11 @@ const FinishPage = () => {
                 }
             </div>
             <div className={s.buttonWrap}>
-                <button onClick={handleEndtGameClick}>END GAME</button>
+                <h1>You {pokemonsContext.statusGame}</h1>
+                <button 
+                    onClick={handleEndGameClick}
+                    // disabled={pokemonsContext.statusGame !== "WIN"}
+                >END GAME</button>
             </div>
             <div className="flex">
                 {
@@ -55,7 +61,7 @@ const FinishPage = () => {
                         <div
                             key={id}>
                             <PokemonCard
-                                className={s.card}
+                                className={cn(s.card, s.noSelected)}
                                 id={id}
                                 name={name}
                                 img={img}

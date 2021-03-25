@@ -147,13 +147,18 @@ const BoardPage = () => {
     useEffect(() => {
         if(steps === 9) {
             const [player1Count, player2Count] = counterWin(board, player1, player2);
-
+            let statusGame;
             if (player1Count > player2Count) {
                 alert("WIN")
+                statusGame = "WIN";
             } else if (player1Count < player2Count) {
                 alert("LOSE")
-            } else alert("DRAW");
-            
+                statusGame = "LOSE";
+            } else {
+                alert("DRAW")
+                statusGame = "DRAW";
+            }
+            pokemonsContext.onSetStatusGame(statusGame);
             history.push("/game/finish")
         }
     }, [steps])

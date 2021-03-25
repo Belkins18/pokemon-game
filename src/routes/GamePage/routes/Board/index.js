@@ -1,5 +1,6 @@
 import {useContext, useEffect, useState} from 'react';
 import { useHistory } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 // Components
 import PokemonCard from '../../../../components/PokemonCard';
 import { PokemonContext } from '../../../../context/pokemonContext';
@@ -10,9 +11,10 @@ import API_RESPONSE from "../../../../api";
 
 const BoardPage = () => {
     const [board, setBoard] = useState([]);
+    const [player2, setPlayer2] = useState([]);
 
     const {pokemons} = useContext(PokemonContext);
-    // const history = useHistory();
+    const history = useHistory();
 
     useEffect( () => {
         async function fetchBoardData() {
@@ -20,13 +22,18 @@ const BoardPage = () => {
             const boardRequest = await boardResponse.json();
             return boardRequest;
         }
-        fetchBoardData().then(({data}) => {
-            setBoard(data);
-        });
-    }, [])
+        fetchBoardData().then(({data}) => setBoard(data));
 
-    // if (Object.keys(pokemons).length === 0)
-    //     history.replace("/game")
+        async function fetchPlayer2Data() {
+            const player2Response = await fetch(API_RESPONSE.createPlayer.url, API_RESPONSE.createPlayer.options);
+            const player2Request = await player2Response.json();
+            return player2Request;
+        }
+
+        fetchPlayer2Data().then(({data}) => setPlayer2(data));
+    }, []);
+    if (Object.keys(pokemons).length === 0)
+        history.replace("/game")
 
     const handleClickBoardPlate = (position) => {
         console.log("pos: ", position);
@@ -34,30 +41,29 @@ const BoardPage = () => {
 
     return (
         <div className={s.root}>
-						<div className={s.playerOne}>
-                            {
-                                Object.entries(pokemons)
-                                .map(([key, {id, name, img, type, values, isSelected}]) => (
-                                    <PokemonCard
-                                        className={s.card}
-                                        key={key}
-                                        uuid={key}
-                                        id={id}
-                                        name={name}
-                                        img={img}
-                                        type={type}
-                                        values={values}
-                                        isActive={true}
-                                        minimize
-                                        isSelected={isSelected}
-                                    />
-                                ))
-                            }
-						</div>
+            <div className={s.playerOne}>
+                {
+                    Object.entries(pokemons)
+                    .map(([key, {id, name, img, type, values, isSelected}]) => (
+                        <PokemonCard
+                            className={s.card}
+                            key={key}
+                            uuid={key}
+                            id={id}
+                            name={name}
+                            img={img}
+                            type={type}
+                            values={values}
+                            isActive={true}
+                            minimize
+                            isSelected={isSelected}
+                        />
+                    ))
+                }
+            </div>
             <div className={s.board}>
                 {
                     board.map(item => {
-                        console.log(item)
                         return(
                             <div
                                 key={item.position}
@@ -70,6 +76,24 @@ const BoardPage = () => {
                             </div>
                         )
                     })
+                }
+            </div>
+            <div className={s.playerTwo}>
+                {
+                    player2
+                        .map(({id, name, img, type, values}) => (
+                            <PokemonCard
+                                key={uuidv4()}
+                                className={s.card}
+                                id={id}
+                                name={name}
+                                img={img}
+                                type={type}
+                                values={values}
+                                isActive={true}
+                                minimize
+                            />
+                        ))
                 }
             </div>
         </div>

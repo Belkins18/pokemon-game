@@ -29,7 +29,8 @@ const counterWin = (board, player1, player2) => {
 }
 
 const BoardPage = () => {
-    const {pokemons} = useContext(PokemonContext);
+    const pokemonsContext = useContext(PokemonContext);
+    const {pokemons, onAiPokemons} = pokemonsContext;
 
     const [board, setBoard] = useState([]);
     const [player1, setPlayer1] = useState(() => {
@@ -74,21 +75,25 @@ const BoardPage = () => {
         }
 
         fetchPlayer2Data().then(({data}) => {
-            if (!cleanupFunction) setPlayer2(
-                data.map(item => {
-                    return {
-                        ...item,
-                        possession: "red"
-                    }
-                })
-            )
+            if (!cleanupFunction) {
+                setPlayer2(
+                    data.map(item => {
+                        return {
+                            ...item,
+                            possession: "red"
+                        }
+                    })
+                )
+                //set player2 cards to pokemonContextProvider
+                onAiPokemons(data);
+            }
         });
         // функция очистки useEffect
-        // return () => cleanupFunction = true;
+        return () => cleanupFunction = true;
     }, []);
 
     if (Object.keys(pokemons).length === 0)
-        history.replace("/game")
+        history.replace({pathname: '/game', state:{selectedPokemons: {}, aiPopemons: []}})
 
     const handleClickBoardPlate = async (position) => {
         console.log("pos: ", position);
@@ -148,6 +153,8 @@ const BoardPage = () => {
             } else if (player1Count < player2Count) {
                 alert("LOSE")
             } else alert("DRAW");
+            
+            history.push("/game/finish")
         }
     }, [steps])
 

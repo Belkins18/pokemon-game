@@ -32,8 +32,8 @@ const API_STRUCT = {
 }
 
 const api = Object.entries(API_STRUCT).reduce((prev, curr) => {
-    console.log(prev)
-    console.log(curr)
+    // console.log(prev)
+    // console.log(curr)
     const key = curr[0];
     let values = curr[1];
 

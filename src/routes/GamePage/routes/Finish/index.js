@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import {useHistory} from "react-router-dom";
 // Components
 import PokemonCard from "../../../../components/PokemonCard";
@@ -19,6 +19,12 @@ const FinishPage = () => {
         pokemonsContext.onClearContext();
         history.push({pathname: "/game/"});
     }
+
+    useEffect(() => {
+      if (!myCards.length) {
+        history.push({pathname: "/game/"});
+      }
+    })
     return (
         <>
             <div className="flex">

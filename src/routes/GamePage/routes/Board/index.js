@@ -1,4 +1,5 @@
 import {useContext, useEffect, useState} from 'react';
+import {useHistory} from "react-router-dom";
 // Components
 import PokemonCard from '../../../../components/PokemonCard';
 import {PokemonContext} from '../../../../context/pokemonContext';
@@ -7,6 +8,25 @@ import s from './style.module.css';
 // Api
 import API_RESPONSE from "../../../../api";
 import PlayerBoard from "./component/PlayerBoard";
+
+
+const counterWin = (board, player1, player2) => {
+    let player1Count = player1.length;
+    let player2Count = player2.length;
+
+    board.forEach(item => {
+        if (item.card.possession === "red") {
+            player2Count++
+        }
+
+        if(item.card.possession === "blue") {
+            player1Count++
+        }
+
+    });
+
+    return [player1Count, player2Count];
+}
 
 const BoardPage = () => {
     const {pokemons} = useContext(PokemonContext);
@@ -22,8 +42,9 @@ const BoardPage = () => {
     });
     const [player2, setPlayer2] = useState([]);
     const [choiceCard, setChoiceCard] = useState(null);
+    const [steps, setSteps] = useState(0);
 
-    // const history = useHistory();
+    const history = useHistory();
 
     useEffect(() => {
         let cleanupFunction = false;
@@ -63,11 +84,11 @@ const BoardPage = () => {
             )
         });
         // функция очистки useEffect
-        return () => cleanupFunction = true;
+        // return () => cleanupFunction = true;
     }, []);
 
-    // if (Object.keys(pokemons).length === 0)
-    //     history.replace("/game")
+    if (Object.keys(pokemons).length === 0)
+        history.replace("/game")
 
     const handleClickBoardPlate = (position) => {
         console.log("pos: ", position);
@@ -98,15 +119,39 @@ const BoardPage = () => {
                     console.error(e.message());
                 }
             }
-
             magicReq(params).then(({data}) => {
                 console.log(data);
                 setBoard(data);
             });
 
+            if (choiceCard.player === 1) {
+                setPlayer1(prevState => prevState.filter(item => item.id !== choiceCard.id))
+            }
+
+            if (choiceCard.player === 2) {
+                setPlayer2(prevState => prevState.filter(item => item.id !== choiceCard.id))
+            }
+
+
+            setSteps(prevState => {
+                const count = prevState + 1;
+                return count;
+            })
 
         }
     }
+
+    useEffect(() => {
+        if(steps === 9) {
+            const [player1Count, player2Count] = counterWin(board, player1, player2);
+
+            if (player1Count > player2Count) {
+                alert("WIN")
+            } else if (player1Count < player2Count) {
+                alert("LOSE")
+            } else alert("DRAW");
+        }
+    }, [steps])
 
     return (
         <div className={s.root}>

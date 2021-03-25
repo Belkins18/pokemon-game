@@ -1,6 +1,5 @@
 import {useContext, useEffect, useState} from 'react';
 import { useHistory } from "react-router-dom";
-import { v4 as uuidv4 } from 'uuid';
 // Components
 import PokemonCard from '../../../../components/PokemonCard';
 import { PokemonContext } from '../../../../context/pokemonContext';
@@ -8,13 +7,14 @@ import { PokemonContext } from '../../../../context/pokemonContext';
 import s from './style.module.css';
 // Api
 import API_RESPONSE from "../../../../api";
+import PlayerBoard from "./component/PlayerBoard";
 
 const BoardPage = () => {
     const [board, setBoard] = useState([]);
     const [player2, setPlayer2] = useState([]);
 
     const {pokemons} = useContext(PokemonContext);
-    const history = useHistory();
+    // const history = useHistory();
 
     useEffect( () => {
         let cleanupFunction = false;
@@ -44,8 +44,9 @@ const BoardPage = () => {
         // функция очистки useEffect
         return () => cleanupFunction = true;
     }, []);
-    if (Object.keys(pokemons).length === 0)
-        history.replace("/game")
+
+    // if (Object.keys(pokemons).length === 0)
+    //     history.replace("/game")
 
     const handleClickBoardPlate = (position) => {
         console.log("pos: ", position);
@@ -91,22 +92,7 @@ const BoardPage = () => {
                 }
             </div>
             <div className={s.playerTwo}>
-                {
-                    player2
-                        .map(({id, name, img, type, values}) => (
-                            <PokemonCard
-                                key={uuidv4()}
-                                className={s.card}
-                                id={id}
-                                name={name}
-                                img={img}
-                                type={type}
-                                values={values}
-                                isActive={true}
-                                minimize
-                            />
-                        ))
-                }
+                <PlayerBoard card={ player2 }/>
             </div>
         </div>
     );

@@ -1,32 +1,58 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import {useHistory} from "react-router-dom";
 // Components
 import PokemonCard from "../../../../components/PokemonCard";
 // Context
 import {PokemonContext} from "../../../../context/pokemonContext";
+import {FirebaseContext} from "../../../../context/firebaseContext";
 // Styles
 import s from "./style.module.css";
 import cn from "classnames";
 
 const FinishPage = () => {
     const pokemonsContext = useContext(PokemonContext);
+    const firebaseContext = useContext(FirebaseContext);
+    const [enemyPokemons, setEnemyPokemons] = useState(pokemonsContext.enemyPopemons)
+    const [selectedPokemon, setSelectedPokemon] = useState(null)
+
     const history = useHistory();
 
     const myCards =  Object.values(pokemonsContext.pokemons);
-    const enemyCards = pokemonsContext.enemyPopemons;
 
-    const handleEndGameClick = (e) => {
-        e.preventDefault();
-        console.log(pokemonsContext);
-        pokemonsContext.onClearContext();
-        history.push({pathname: "/game/"});
+    const handleEndGameClick = () => {
+        console.log(selectedPokemon);
+        if (selectedPokemon) {
+            delete selectedPokemon.isSelected;
+            
+            firebaseContext.addPokenon(selectedPokemon, () => {
+                pokemonsContext.onClearContext();
+                history.push({pathname: "/game/"});
+            });
+        } else {
+            pokemonsContext.onClearContext();
+            history.push({pathname: "/game/"});
+        }
     }
 
-    useEffect(() => {
-      if (!myCards.length) {
-        history.push({pathname: "/game/"});
-      }
-    })
+    const handleChangeActiveSelected = (id, isSelected) => {
+        const copyState = enemyPokemons;
+        const newState = copyState.map((item, index) => {
+            if(item.id === id) {
+                item.isSelected = !isSelected;
+                setSelectedPokemon(item);
+            } else {
+                item.isSelected = false;
+            }
+        })
+        console.log(selectedPokemon);
+        pokemonsContext.onEnemyPokemons(newState);
+    };
+
+    // useEffect(() => {
+    //   if (!myCards.length) {
+    //     history.push({pathname: "/game/"});
+    //   }
+    // } [myCards]);
     return (
         <>
             <div className="flex">
@@ -52,16 +78,16 @@ const FinishPage = () => {
                 <h1>You {pokemonsContext.statusGame}</h1>
                 <button 
                     onClick={handleEndGameClick}
-                    // disabled={pokemonsContext.statusGame !== "WIN"}
+                    // disabled={}
                 >END GAME</button>
             </div>
             <div className="flex">
                 {
-                    enemyCards.map(({id, name, img, type, values, isSelected}) => (
+                    enemyPokemons.map(({id, name, img, type, values, isSelected}) => (
                         <div
                             key={id}>
                             <PokemonCard
-                                className={cn(s.card, s.noSelected)}
+                                className={cn(s.card, {[s.noSelected]:pokemonsContext.statusGame !== "WIN", [s.isSelected]: isSelected})}
                                 id={id}
                                 name={name}
                                 img={img}
@@ -69,6 +95,12 @@ const FinishPage = () => {
                                 values={values}
                                 isActive={true}
                                 isSelected={isSelected}
+                                onChangeParentState={ () => {
+                                    if (pokemonsContext.statusGame === "WIN") {
+                                        console.log("click")
+                                        handleChangeActiveSelected(id, isSelected)
+                                    }
+                                }}
                             />
                         </div>
                         

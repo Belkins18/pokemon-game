@@ -9,6 +9,11 @@
     cursor: initial;
 }
 
+.card.isSelected {
+    margin-top: -20px;
+    margin-bottom: 20px;
+}
+
 .buttonWrap {
     text-align: center;
     padding: 2rem;

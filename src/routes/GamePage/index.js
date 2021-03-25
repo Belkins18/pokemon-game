@@ -42,7 +42,6 @@ const GamePage = () => {
     };
 
     const handleStatusGame = (statusGame) => {
-        debugger;
         setStatusGame(statusGame);
     }
 

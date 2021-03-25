@@ -90,7 +90,7 @@ const BoardPage = () => {
     if (Object.keys(pokemons).length === 0)
         history.replace("/game")
 
-    const handleClickBoardPlate = (position) => {
+    const handleClickBoardPlate = async (position) => {
         console.log("pos: ", position);
         console.log("choiceCard: ", choiceCard);
 
@@ -119,10 +119,8 @@ const BoardPage = () => {
                     console.error(e.message());
                 }
             }
-            magicReq(params).then(({data}) => {
-                console.log(data);
-                setBoard(data);
-            });
+
+            const {data} = await magicReq(params);
 
             if (choiceCard.player === 1) {
                 setPlayer1(prevState => prevState.filter(item => item.id !== choiceCard.id))
@@ -132,7 +130,7 @@ const BoardPage = () => {
                 setPlayer2(prevState => prevState.filter(item => item.id !== choiceCard.id))
             }
 
-
+            setBoard(data);
             setSteps(prevState => {
                 const count = prevState + 1;
                 return count;

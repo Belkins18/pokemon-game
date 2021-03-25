@@ -26,7 +26,7 @@ const API_STRUCT = {
         url: `${_url}/create-player`,
     },
     playersTurn: {
-        method: "GET",
+        method: "POST",
         url: `${_url}/players-turn`,
     }
 }

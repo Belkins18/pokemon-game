@@ -72,6 +72,40 @@ const BoardPage = () => {
     const handleClickBoardPlate = (position) => {
         console.log("pos: ", position);
         console.log("choiceCard: ", choiceCard);
+
+        if (choiceCard) {
+            const params = {
+                position,
+                card: choiceCard,
+                board
+            }
+
+            console.log(
+                API_RESPONSE.playersTurn.url, {
+                    ...API_RESPONSE.playersTurn.options,
+                    body: JSON.stringify(params),
+                }
+            )
+            async function magicReq(cardParams) {
+                try {
+                    const res = await fetch(API_RESPONSE.playersTurn.url, {
+                        ...API_RESPONSE.playersTurn.options,
+                        body: JSON.stringify(cardParams),
+                    });
+                    const request = await res.json();
+                    return request;
+                } catch (e) {
+                    console.error(e.message());
+                }
+            }
+
+            magicReq(params).then(({data}) => {
+                console.log(data);
+                setBoard(data);
+            });
+
+
+        }
     }
 
     return (
@@ -93,7 +127,7 @@ const BoardPage = () => {
                                 onClick={() => !item.card && handleClickBoardPlate(item.position)}
                             >
                                 {
-                                    item.card && <PokemonCard {...item} minimize/>
+                                    item.card && <PokemonCard {...item.card} isActive minimize/>
                                 }
                             </div>
                         )

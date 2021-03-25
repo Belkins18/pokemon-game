@@ -17,12 +17,20 @@ const BoardPage = () => {
     const history = useHistory();
 
     useEffect( () => {
+        let cleanupFunction = false;
         async function fetchBoardData() {
-            const boardResponse = await fetch(API_RESPONSE.board.url, API_RESPONSE.board.options);
-            const boardRequest = await boardResponse.json();
-            return boardRequest;
+            try{
+                const boardResponse = await fetch(API_RESPONSE.board.url, API_RESPONSE.board.options);
+                const boardRequest = await boardResponse.json();
+                return boardRequest;
+            } catch (e) {
+                console.error(e.message)
+            }
+
         }
-        fetchBoardData().then(({data}) => setBoard(data));
+        fetchBoardData().then(({data}) => {
+            if(!cleanupFunction) setBoard(data)
+        });
 
         async function fetchPlayer2Data() {
             const player2Response = await fetch(API_RESPONSE.createPlayer.url, API_RESPONSE.createPlayer.options);
@@ -30,7 +38,11 @@ const BoardPage = () => {
             return player2Request;
         }
 
-        fetchPlayer2Data().then(({data}) => setPlayer2(data));
+        fetchPlayer2Data().then(({data}) => {
+            if(!cleanupFunction) setPlayer2(data)
+        });
+        // функция очистки useEffect
+        return () => cleanupFunction = true;
     }, []);
     if (Object.keys(pokemons).length === 0)
         history.replace("/game")

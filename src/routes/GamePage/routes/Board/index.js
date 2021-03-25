@@ -9,17 +9,27 @@ import API_RESPONSE from "../../../../api";
 import PlayerBoard from "./component/PlayerBoard";
 
 const BoardPage = () => {
+    const {pokemons} = useContext(PokemonContext);
+
     const [board, setBoard] = useState([]);
+    const [player1, setPlayer1] = useState(() => {
+        return Object.values(pokemons).map(item => {
+            return {
+                ...item,
+                possession: "blue"
+            }
+        })
+    });
     const [player2, setPlayer2] = useState([]);
     const [choiceCard, setChoiceCard] = useState(null);
 
-    const {pokemons} = useContext(PokemonContext);
     // const history = useHistory();
 
-    useEffect( () => {
+    useEffect(() => {
         let cleanupFunction = false;
+
         async function fetchBoardData() {
-            try{
+            try {
                 const boardResponse = await fetch(API_RESPONSE.board.url, API_RESPONSE.board.options);
                 const boardRequest = await boardResponse.json();
                 return boardRequest;
@@ -33,13 +43,24 @@ const BoardPage = () => {
         });
 
         async function fetchPlayer2Data() {
-            const player2Response = await fetch(API_RESPONSE.createPlayer.url, API_RESPONSE.createPlayer.options);
-            const player2Request = await player2Response.json();
-            return player2Request;
+            try {
+                const player2Response = await fetch(API_RESPONSE.createPlayer.url, API_RESPONSE.createPlayer.options);
+                const player2Request = await player2Response.json();
+                return player2Request;
+            } catch (e) {
+                console.error(e.message)
+            }
         }
 
         fetchPlayer2Data().then(({data}) => {
-            if(!cleanupFunction) setPlayer2(data)
+            if (!cleanupFunction) setPlayer2(
+                data.map(item => {
+                    return {
+                        ...item,
+                        possession: "red"
+                    }
+                })
+            )
         });
         // функция очистки useEffect
         return () => cleanupFunction = true;
@@ -56,8 +77,10 @@ const BoardPage = () => {
     return (
         <div className={s.root}>
             <div className={s.playerOne}>
-                <PlayerBoard card={Object.values(pokemons)}
-                             onClickCard={(card) => setChoiceCard(card)}
+                <PlayerBoard
+                    player={1}
+                    cards={player1}
+                    onClickCard={(card) => setChoiceCard(card)}
                 />
             </div>
             <div className={s.board}>
@@ -78,8 +101,10 @@ const BoardPage = () => {
                 }
             </div>
             <div className={s.playerTwo}>
-                <PlayerBoard card={ player2 }
-                             onClickCard={(card) => setChoiceCard(card)}/>
+                <PlayerBoard
+                    player={2}
+                    cards={player2}
+                    onClickCard={(card) => setChoiceCard(card)}/>
             </div>
         </div>
     );

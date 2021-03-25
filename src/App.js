@@ -17,7 +17,7 @@ import s from "./app.module.css";
 const App = () => {
     const location = useLocation();
     const noMatch = () => (location.pathname === "/" || location.pathname === "/welcome" || location.pathname === "/game/board")
-    console.log("location: ", location);
+    // console.log("location: ", location);
     return (
         <FirebaseContext.Provider value={new Firebase()}>
             <Switch>

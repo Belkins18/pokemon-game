@@ -23,7 +23,8 @@
 }
 
 .pokemonCard.isActive {
-    animation: flipFront 1000ms 300ms forwards;
+    /*animation: flipFront 1000ms 300ms forwards;*/
+    transform: rotateY(0deg);
 }
 
 @keyframes flipFront {
@@ -161,17 +162,24 @@
     background-color: var(--normal);
 }
 
+.red {
+    background-color: #d998b2;
+}
+.blue {
+    background-color: #a8caea;
+}
+
 .pokemon .imgContainer {
     background-color: rgba(255, 255, 255, 0.6);
     border-radius: 50%;
-    width: 140px;
-    height: 140px;
-    text-align: center;
-    margin-bottom: 20px;
+    width: 90%;
+    height: 90%;
+    max-width: 140px;
+    max-height: 140px;
 }
 
 .pokemon .imgContainer img {
-    margin-top: 20px;
+    /*margin-top: 20px;*/
     max-width: 90%;
 }
 

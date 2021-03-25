@@ -1,8 +1,7 @@
 import {useContext, useEffect, useState} from 'react';
-import { useHistory } from "react-router-dom";
 // Components
 import PokemonCard from '../../../../components/PokemonCard';
-import { PokemonContext } from '../../../../context/pokemonContext';
+import {PokemonContext} from '../../../../context/pokemonContext';
 // Styles
 import s from './style.module.css';
 // Api
@@ -12,6 +11,7 @@ import PlayerBoard from "./component/PlayerBoard";
 const BoardPage = () => {
     const [board, setBoard] = useState([]);
     const [player2, setPlayer2] = useState([]);
+    const [choiceCard, setChoiceCard] = useState(null);
 
     const {pokemons} = useContext(PokemonContext);
     // const history = useHistory();
@@ -50,34 +50,20 @@ const BoardPage = () => {
 
     const handleClickBoardPlate = (position) => {
         console.log("pos: ", position);
+        console.log("choiceCard: ", choiceCard);
     }
 
     return (
         <div className={s.root}>
             <div className={s.playerOne}>
-                {
-                    Object.entries(pokemons)
-                    .map(([key, {id, name, img, type, values, isSelected}]) => (
-                        <PokemonCard
-                            className={s.card}
-                            key={key}
-                            uuid={key}
-                            id={id}
-                            name={name}
-                            img={img}
-                            type={type}
-                            values={values}
-                            isActive={true}
-                            minimize
-                            isSelected={isSelected}
-                        />
-                    ))
-                }
+                <PlayerBoard card={Object.values(pokemons)}
+                             onClickCard={(card) => setChoiceCard(card)}
+                />
             </div>
             <div className={s.board}>
                 {
                     board.map(item => {
-                        return(
+                        return (
                             <div
                                 key={item.position}
                                 className={s.boardPlate}
@@ -92,7 +78,8 @@ const BoardPage = () => {
                 }
             </div>
             <div className={s.playerTwo}>
-                <PlayerBoard card={ player2 }/>
+                <PlayerBoard card={ player2 }
+                             onClickCard={(card) => setChoiceCard(card)}/>
             </div>
         </div>
     );

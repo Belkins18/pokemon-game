@@ -5,15 +5,21 @@ import PokemonCard from "../../../../../../components/PokemonCard";
 // Styles
 import s from "./style.module.css";
 
-const PlayerBoard = ({card}) => {
+const PlayerBoard = ({card, onClickCard}) => {
     const [isSelected, setSelected] = useState(null)
 
     return (
         <>
             {
                 card.map(item => (
-                    <div key={item.id} className={cn(s.cardBoard, {[s.selected]: isSelected === item.id})}
-                         onClick={() => setSelected(item.id)}>
+                    <div
+                        key={item.id}
+                        className={cn(s.cardBoard, {[s.selected]: isSelected === item.id})}
+                        onClick={() => {
+                            setSelected(item.id);
+                            onClickCard && onClickCard(item);
+                        }}
+                    >
                         <PokemonCard
                             id={item.id}
                             name={item.name}

@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Route, Switch, useRouteMatch, useLocation, Redirect} from "react-router-dom";
+import {Route, Switch, useRouteMatch} from "react-router-dom";
 
 import StartPage from "./routes/Start";
 import BoardPage from "./routes/Board";
@@ -9,9 +9,9 @@ import {PokemonContext} from "../../context/pokemonContext";
 
 const GamePage = () => {
     const [selectedPokemons, setSelectedPokemons] = useState({});
-    const [aiPopemons, setAiPopemons] = useState([]);
+    const [enemyPopemons, setEnemyPopemons] = useState([]);
     console.log("£££: selectedPokemons: ", selectedPokemons);
-    console.log("£££: aiPopemons: ", aiPopemons);
+    console.log("£££: aiPopemons: ", enemyPopemons);
 
     const match = useRouteMatch();
 
@@ -30,43 +30,29 @@ const GamePage = () => {
         })
     }
 
-    const handleAiPokemons = (p2Pokemons) => {
-        console.log(p2Pokemons);
-        setAiPopemons(p2Pokemons);
+    const handleEnemyPokemons = (enemyPokemons) => {
+        console.log(enemyPokemons);
+        setEnemyPopemons(enemyPokemons);
     }
 
-
-    const location = useLocation();
-    console.log(location.pathname);
-
-
-    const isEmpty = () => {
-        return (
-            Object.keys(selectedPokemons).length !== 5 && aiPopemons.length !== 5
-        )
-    }
-    console.log(isEmpty());
+    const handleClearContext = () => {
+        setSelectedPokemons({});
+        setEnemyPopemons([]);
+    };
 
     return (
         <PokemonContext.Provider value={{
             pokemons: selectedPokemons,
-            aiPopemons: aiPopemons,
+            enemyPopemons: enemyPopemons,
             onSelectedPokemons: handleSelectedPokemons,
-            onAiPokemons: handleAiPokemons
+            onEnemyPokemons: handleEnemyPokemons,
+            onClearContext: handleClearContext,
+
         }}>
             <Switch>
                 <Route path={`${match.path}/`} exact component={StartPage}/>
                 <Route path={`${match.path}/board`} component={BoardPage}/>
-                <Route path={`${match.path}/finish`} render={() => {
-                    debugger;
-                    if (isEmpty()) {
-                        return <Redirect to={
-                            {pathname: '/game/', state:{selectedPokemons: {}, aiPopemons: []}}
-                        }/>
-                    } else {
-                        return <FinishPage/>
-                    }
-                }}/>
+                <Route path={`${match.path}/finish`} component={FinishPage}/>
             </Switch>
         </PokemonContext.Provider>
 

@@ -11,14 +11,19 @@ const FinishPage = () => {
     const pokemonsContext = useContext(PokemonContext);
     const history = useHistory();
 
+    const myCards =  Object.values(pokemonsContext.pokemons);
+    const enemyCards = pokemonsContext.enemyPopemons;
+
     const handleEndtGameClick = () => {
-        history.push({pathname: "/game/", state:{selectedPokemons: {}, aiPopemons: []}});
+        console.log(pokemonsContext);
+        pokemonsContext.onClearContext();
+        history.push({pathname: "/game/"});
     }
     return (
         <>
             <div className="flex">
                 {
-                    Object.values(pokemonsContext.pokemons).map(({id, name, img, type, values}) => (
+                    myCards.map(({id, name, img, type, values}) => (
                         <div
                             key={id}>
                             <PokemonCard
@@ -40,7 +45,7 @@ const FinishPage = () => {
             </div>
             <div className="flex">
                 {
-                    pokemonsContext.aiPopemons.map(({id, name, img, type, values, isSelected}) => (
+                    enemyCards.map(({id, name, img, type, values, isSelected}) => (
                         <div
                             key={id}>
                             <PokemonCard

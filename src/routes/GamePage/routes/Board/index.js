@@ -30,7 +30,7 @@ const counterWin = (board, player1, player2) => {
 
 const BoardPage = () => {
     const pokemonsContext = useContext(PokemonContext);
-    const {pokemons, onAiPokemons} = pokemonsContext;
+    const {pokemons, onEnemyPokemons} = pokemonsContext;
 
     const [board, setBoard] = useState([]);
     const [player1, setPlayer1] = useState(() => {
@@ -85,7 +85,7 @@ const BoardPage = () => {
                     })
                 )
                 //set player2 cards to pokemonContextProvider
-                onAiPokemons(data);
+                onEnemyPokemons(data);
             }
         });
         // функция очистки useEffect
